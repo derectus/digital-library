@@ -12,7 +12,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'language', 'issues', 'status', 'total'
+        'user_id', 'language', 'issues', 'status', 'total',
     ];
 
     /**
@@ -21,7 +21,7 @@ class Order extends Model
      * @var array
      */
     protected $appends = [
-        'product'
+        'product',
     ];
 
     public function user()
@@ -31,8 +31,10 @@ class Order extends Model
 
     public function getProductAttribute()
     {
-        if ($this->language == 'tr')
+        if ($this->language == 'tr') {
             return 'Arka Kapı Dergi';
+        }
+
         return 'Arka Kapı Magazine';
     }
 
@@ -40,6 +42,7 @@ class Order extends Model
      * Accessor for issues.
      *
      * @param string $value
+     *
      * @return array
      */
     public function getIssuesAttribute($value)
@@ -55,7 +58,7 @@ class Order extends Model
     public function setIssuesAttribute($value)
     {
         $value = array_map(function ($val) {
-            return (int)$val;
+            return (int) $val;
         }, $value);
 
         $this->attributes['issues'] = json_encode($value);

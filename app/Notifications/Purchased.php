@@ -5,22 +5,22 @@ namespace App\Notifications;
 use App\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class Purchased extends Notification
 {
     use Queueable;
 
     /**
-     * User
+     * User.
      *
      * @var Authenticatable
      **/
     public $user;
 
     /**
-     * Order
+     * Order.
      *
      * @var Order
      **/
@@ -30,7 +30,7 @@ class Purchased extends Notification
      * Create a new notification instance.
      *
      * @param Authenticatable $user
-     * @param Order $order
+     * @param Order           $order
      *
      * @return void
      */
@@ -43,7 +43,8 @@ class Purchased extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -54,25 +55,27 @@ class Purchased extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed $notifiable
+     * @param mixed $notifiable
+     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->subject(__('Order') . ' #' . $this->order->id)
+        return (new MailMessage())
+            ->subject(__('Order').' #'.$this->order->id)
             ->line(__('You are receiving this email because you are purchased new issue(s).'))
-            ->line(__('Product') . ': ' . $this->order->product)
-            ->line(__('Issues') . ': ' . implode(', ', $this->order->issues))
-            ->line(__('Total') . ': ' . $this->order->total . ' ' . ($this->order->language == 'tr' ? 'TL' : 'USD'))
-            ->line(__('Date') . ': ' . $this->order->created_at)
+            ->line(__('Product').': '.$this->order->product)
+            ->line(__('Issues').': '.implode(', ', $this->order->issues))
+            ->line(__('Total').': '.$this->order->total.' '.($this->order->language == 'tr' ? 'TL' : 'USD'))
+            ->line(__('Date').': '.$this->order->created_at)
             ->action(__('See My Purchased'), route('my-purchases'));
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function toArray($notifiable)

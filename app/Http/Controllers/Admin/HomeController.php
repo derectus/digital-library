@@ -9,8 +9,9 @@ class HomeController extends AdminController
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
      * @throws \Exception
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {

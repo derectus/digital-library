@@ -14,17 +14,18 @@ class IssueController extends Controller
     public function index()
     {
         return view('issue.index', [
-            'title' => __('All Issues'),
+            'title'  => __('All Issues'),
             'issues' => Issue::orderBy('language', app()->getLocale() == 'tr' ? 'desc' : 'asc')
                 ->orderBy('issue', 'desc')
-                ->get()
+                ->get(),
         ]);
     }
 
     /**
      * Issue detail page.
      *
-     * @param  string $slug
+     * @param string $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function show($slug)
@@ -33,8 +34,7 @@ class IssueController extends Controller
 
         return view('issue.show', [
             'title' => $issue->title,
-            'issue' => $issue
+            'issue' => $issue,
         ]);
     }
-
 }

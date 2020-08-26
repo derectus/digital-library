@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\AdminController;
 use App\Issue;
 use App\Notifications\IssuePublished;
 use App\User;
-use App\Http\Controllers\AdminController;
 use Illuminate\Bus\Queueable;
 
 class EmailController extends AdminController
 {
-
     use Queueable;
 
     /**
@@ -21,16 +20,16 @@ class EmailController extends AdminController
     public function form()
     {
         return view('admin.email', [
-            'users' => User::get(['id', 'name', 'email']),
-            'issues' => Issue::get(['id', 'title', 'language'])
+            'users'  => User::get(['id', 'name', 'email']),
+            'issues' => Issue::get(['id', 'title', 'language']),
         ]);
     }
 
     /**
      * Send email to user.
      *
-     * @param integer $user_id
-     * @param integer $issue_id
+     * @param int $user_id
+     * @param int $issue_id
      *
      * @return void
      */
@@ -41,5 +40,4 @@ class EmailController extends AdminController
 
         $user->notify((new IssuePublished($user, $issue))->locale($user->language));
     }
-
 }

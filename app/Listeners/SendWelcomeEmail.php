@@ -22,7 +22,8 @@ class SendWelcomeEmail
     /**
      * Handle the event.
      *
-     * @param  UserAdded $event
+     * @param UserAdded $event
+     *
      * @return void
      */
     public function handle(UserAdded $event)

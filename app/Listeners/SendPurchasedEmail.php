@@ -21,6 +21,7 @@ class SendPurchasedEmail
      * Handle the event.
      *
      * @param OrderAdded $event
+     *
      * @return void
      */
     public function handle(OrderAdded $event)

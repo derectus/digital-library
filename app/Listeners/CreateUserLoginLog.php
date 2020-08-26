@@ -22,14 +22,15 @@ class CreateUserLoginLog
      * Handle the event.
      *
      * @param Login $event
+     *
      * @return void
      */
     public function handle(Login $event)
     {
         Log::create([
-            'user_id' => $event->user->id,
-            'action' => 'login',
-            'ip_address' => CloudflareRealIpServiceProvider::ip()
+            'user_id'    => $event->user->id,
+            'action'     => 'login',
+            'ip_address' => CloudflareRealIpServiceProvider::ip(),
         ]);
     }
 }

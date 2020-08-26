@@ -15,19 +15,19 @@ class IssueService
      * Assign issue to user.
      *
      * @param Authenticatable $user
-     * @param Issue $issue
-     * @param Order $order
+     * @param Issue           $issue
+     * @param Order           $order
      */
     public function assignIssueToUser(Authenticatable $user, Issue $issue, Order $order)
     {
         // assign issue
-        $purchases = $user->{'purchases_' . $issue->language};
+        $purchases = $user->{'purchases_'.$issue->language};
 
         $purchases[] = $issue->issue;
 
         asort($purchases);
 
-        $user->{'purchases_' . $issue->language} = array_values($purchases);
+        $user->{'purchases_'.$issue->language} = array_values($purchases);
         $user->save();
 
         // Trigger events
@@ -38,7 +38,7 @@ class IssueService
      * Create order and assign issue if issue is free.
      *
      * @param Authenticatable $user
-     * @param Issue $issue
+     * @param Issue           $issue
      *
      * @return Order $order
      */
@@ -46,18 +46,18 @@ class IssueService
     {
         // create order
         $order = Order::create([
-            'user_id' => $user->id,
+            'user_id'  => $user->id,
             'language' => $issue->language,
-            'issues' => [$issue->issue],
-            'status' => 'pending',
-            'total' => $issue->price
+            'issues'   => [$issue->issue],
+            'status'   => 'pending',
+            'total'    => $issue->price,
         ]);
 
         // If issue is free, auto buy.
         if ($issue->price == 0) {
             $this->assignIssueToUser(Auth::user(), $issue, $order);
             $order->update([
-                'status' => 'successful'
+                'status' => 'successful',
             ]);
         }
 
@@ -68,8 +68,8 @@ class IssueService
      * Get PayTR token for payment form.
      *
      * @param Authenticatable $user
-     * @param Issue $issue
-     * @param Order $order
+     * @param Issue           $issue
+     * @param Order           $order
      *
      * @return string
      */
@@ -87,10 +87,9 @@ class IssueService
                 [
                     $issue->title,
                     $issue->price,
-                    1
-                ]
+                    1,
+                ],
             ]
         );
     }
-
 }

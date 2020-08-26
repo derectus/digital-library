@@ -42,12 +42,14 @@ class LoginController extends Controller
      * Determine if the user has too many failed login attempts.
      *
      * @param Request $request
+     *
      * @return bool
      */
     protected function hasTooManyLoginAttempts(Request $request)
     {
         return $this->limiter()->tooManyAttempts(
-            $this->throttleKey($request), 6
+            $this->throttleKey($request),
+            6
         );
     }
 }

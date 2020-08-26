@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Country;
 use App\Events\UserAdded;
 use App\Helper\Datatables;
+use App\Http\Controllers\AdminController;
 use App\Issue;
-use App\Order;
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
@@ -24,15 +23,16 @@ class UserController extends AdminController
      */
     public function index(Request $request)
     {
-        if ($request->get('json'))
+        if ($request->get('json')) {
             return response()->json(
                 Datatables::simple($request->all(), 'users', 'id', $this->userService->getDatatableColumns())
             );
+        }
 
         return view('admin.datatables', [
-            'title' => 'Kullanıcılar',
-            'thead' => ['id', 'Admin?', 'Ban Durumu', 'Adı - Soyadı', 'Eposta', 'Ülke', 'Dil', 'Meslek', 'Düzenle'],
-            'columnDefs' => [3,4,7]
+            'title'      => 'Kullanıcılar',
+            'thead'      => ['id', 'Admin?', 'Ban Durumu', 'Adı - Soyadı', 'Eposta', 'Ülke', 'Dil', 'Meslek', 'Düzenle'],
+            'columnDefs' => [3, 4, 7],
         ]);
     }
 
@@ -44,33 +44,36 @@ class UserController extends AdminController
     public function create()
     {
         return view('admin.users.create', [
-            'countries' => Country::all(),
-            'issues_all_count' => Issue::all('id')->count()
+            'countries'        => Country::all(),
+            'issues_all_count' => Issue::all('id')->count(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email', 'unique:users'],
-            'is_admin' => ['required', 'boolean'],
-            'language' => ['required', 'string', 'regex:(tr|en)'],
+            'email'      => ['required', 'email', 'unique:users'],
+            'is_admin'   => ['required', 'boolean'],
+            'language'   => ['required', 'string', 'regex:(tr|en)'],
             'country_id' => ['required', 'exists:countries,id'],
         ]);
 
         $data = $request->all();
 
-        if (!$request->input('purchases_tr'))
+        if (!$request->input('purchases_tr')) {
             $data['purchases_tr'] = [];
+        }
 
-        if (!$request->input('purchases_en'))
+        if (!$request->input('purchases_en')) {
             $data['purchases_en'] = [];
+        }
 
         // Create user
         $user = User::create($data);
@@ -88,34 +91,37 @@ class UserController extends AdminController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $user = User::findOrFail($id);
+
         return view('admin.users.edit', [
-            'user' => $user,
-            'countries' => Country::all(),
+            'user'             => $user,
+            'countries'        => Country::all(),
             'issues_all_count' => Issue::all('id')->count(),
-            'purchases_tr' => $user->purchases_tr,
-            'purchases_en' => $user->purchases_en
+            'purchases_tr'     => $user->purchases_tr,
+            'purchases_en'     => $user->purchases_en,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'is_admin' => ['required', 'boolean'],
-            'is_banned' => ['required', 'boolean'],
-            'language' => ['required', 'string', 'regex:(tr|en)'],
+            'is_admin'   => ['required', 'boolean'],
+            'is_banned'  => ['required', 'boolean'],
+            'language'   => ['required', 'string', 'regex:(tr|en)'],
             'country_id' => ['required', 'exists:countries,id'],
         ]);
 
@@ -124,14 +130,17 @@ class UserController extends AdminController
         // Set password (if sent)
         $data['password'] = Hash::make($request->input('password'));
 
-        if (!$request->input('purchases_tr'))
+        if (!$request->input('purchases_tr')) {
             $data['purchases_tr'] = [];
+        }
 
-        if (!$request->input('purchases_en'))
+        if (!$request->input('purchases_en')) {
             $data['purchases_en'] = [];
+        }
 
-        if (!$request->input('password'))
+        if (!$request->input('password')) {
             unset($data['password']);
+        }
 
         // Update user
         User::findOrFail($id)->update($data);
@@ -142,5 +151,4 @@ class UserController extends AdminController
 
         return redirect()->route('admin.users.edit', $id);
     }
-
 }

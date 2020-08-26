@@ -30,9 +30,9 @@ class PayTR
     /**
      * Merchant credentials.
      *
-     * @var string $merchant_id
-     * @var string $merchant_key
-     * @var string $merchant_salt
+     * @var string
+     * @var string
+     * @var string
      */
     private $merchant_id;
     private $merchant_key;
@@ -41,27 +41,26 @@ class PayTR
     /**
      * Merchant return URLs.
      *
-     * @var string $merchant_ok_url
-     * @var string $merchant_fail_url
+     * @var string
+     * @var string
      */
     private $merchant_ok_url;
     private $merchant_fail_url;
 
     /**
-     * Other settings
+     * Other settings.
      *
-     * @var string $debug_on
-     * @var string $test_mode
-     * @var string $timeout_limit
-     * @var string $no_installment
-     * @var string $max_installment
+     * @var string
+     * @var string
+     * @var string
+     * @var string
+     * @var string
      */
     private $debug_on;
     private $test_mode;
     private $timeout_limit = 30; // minute
     private $no_installment = 1; // 1 => no installment, 0 => support installment and set $max_installment variable.
     private $max_installment = 0; // 0 => maximum installment set by system defaults, 1-12 => installment number
-
 
     /**
      * Create a new instance.
@@ -82,14 +81,14 @@ class PayTR
     /**
      * Get token for payment form.
      *
-     * @param Order $order
-     * @param integer $payment_amount // float * 100. for example; 9.99 * 100 = 999
-     * @param string $currency // TL, USD
-     * @param string $user_email // customer email
-     * @param string $user_name // customer name, surname
-     * @param string $user_address // customer address
-     * @param string $user_phone // customer phone number
-     * @param array $user_basket // customer basket. [['title', 'price', 'amount']]
+     * @param Order  $order
+     * @param int    $payment_amount // float * 100. for example; 9.99 * 100 = 999
+     * @param string $currency       // TL, USD
+     * @param string $user_email     // customer email
+     * @param string $user_name      // customer name, surname
+     * @param string $user_address   // customer address
+     * @param string $user_phone     // customer phone number
+     * @param array  $user_basket    // customer basket. [['title', 'price', 'amount']]
      *
      * @return string
      */
@@ -98,40 +97,40 @@ class PayTR
         $user_ip = CloudflareRealIpServiceProvider::ip();
         $user_basket = base64_encode(json_encode($user_basket));
 
-        $hash_str = $this->merchant_id . $user_ip . $order->id . $user_email . $payment_amount . $user_basket . $this->no_installment . $this->max_installment . $currency . $this->test_mode;
-        $paytr_token = base64_encode(hash_hmac('sha256', $hash_str . $this->merchant_salt, $this->merchant_key, true));
+        $hash_str = $this->merchant_id.$user_ip.$order->id.$user_email.$payment_amount.$user_basket.$this->no_installment.$this->max_installment.$currency.$this->test_mode;
+        $paytr_token = base64_encode(hash_hmac('sha256', $hash_str.$this->merchant_salt, $this->merchant_key, true));
         $post_vals = [
-            'merchant_id' => $this->merchant_id,
-            'user_ip' => $user_ip,
-            'merchant_oid' => $order->id,
-            'email' => $user_email,
-            'payment_amount' => $payment_amount,
-            'paytr_token' => $paytr_token,
-            'user_basket' => $user_basket,
-            'debug_on' => $this->debug_on,
-            'no_installment' => $this->no_installment,
-            'max_installment' => $this->max_installment,
-            'user_name' => $user_name,
-            'user_address' => $user_address,
-            'user_phone' => $user_phone,
-            'merchant_ok_url' => $this->merchant_ok_url,
+            'merchant_id'       => $this->merchant_id,
+            'user_ip'           => $user_ip,
+            'merchant_oid'      => $order->id,
+            'email'             => $user_email,
+            'payment_amount'    => $payment_amount,
+            'paytr_token'       => $paytr_token,
+            'user_basket'       => $user_basket,
+            'debug_on'          => $this->debug_on,
+            'no_installment'    => $this->no_installment,
+            'max_installment'   => $this->max_installment,
+            'user_name'         => $user_name,
+            'user_address'      => $user_address,
+            'user_phone'        => $user_phone,
+            'merchant_ok_url'   => $this->merchant_ok_url,
             'merchant_fail_url' => $this->merchant_fail_url,
-            'timeout_limit' => $this->timeout_limit,
-            'currency' => $currency,
-            'test_mode' => $this->test_mode
+            'timeout_limit'     => $this->timeout_limit,
+            'currency'          => $currency,
+            'test_mode'         => $this->test_mode,
         ];
 
         $response = (new Client())->post('https://www.paytr.com/odeme/api/get-token', [
-            'form_params' => $post_vals
+            'form_params' => $post_vals,
         ]);
 
         $result = json_decode($response->getBody(), 1);
 
         if ($result['status'] != 'success') {
             $order->update([
-                'status' => 'unsuccessful'
+                'status' => 'unsuccessful',
             ]);
-            dd("PAYTR IFRAME failed. reason:" . $result['reason']);
+            dd('PAYTR IFRAME failed. reason:'.$result['reason']);
         }
 
         return $result['token'];
@@ -140,7 +139,7 @@ class PayTR
     /**
      * Paytr Callback method.
      *
-     * @param integer $merchant_oid
+     * @param int    $merchant_oid
      * @param string $status
      * @param string $total_amount
      * @param string $request_hash
@@ -149,10 +148,11 @@ class PayTR
      */
     public function callback($merchant_oid, $status, $total_amount, $request_hash)
     {
-        $hash = base64_encode(hash_hmac('sha256', $merchant_oid . $this->merchant_salt . $status . $total_amount, $this->merchant_key, true));
+        $hash = base64_encode(hash_hmac('sha256', $merchant_oid.$this->merchant_salt.$status.$total_amount, $this->merchant_key, true));
 
-        if ($hash != $request_hash)
+        if ($hash != $request_hash) {
             dd('PAYTR notification failed: bad hash');
+        }
 
         $order = Order::where('id', $merchant_oid)->first();
 
@@ -164,7 +164,7 @@ class PayTR
                 (new IssueService())->assignIssueToUser($order->user, $issue, $order);
             } else { // package
                 $issues = array_map(function ($val) {
-                    return (int)$val;
+                    return (int) $val;
                 }, $order->issues);
                 $package = Package::where('language', $order->language)->where('issues', json_encode($issues))->first();
                 (new PackageService())->assignPackageToUser($order->user, $package, $order);
@@ -174,5 +174,4 @@ class PayTR
         }
         $order->save();
     }
-
 }

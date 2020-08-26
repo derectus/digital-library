@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Order;
 use App\Services\Admin\HomeService;
 use App\Services\Admin\IssueService;
 use App\Services\Admin\LogService;
 use App\Services\Admin\OrderService;
 use App\Services\Admin\PackageService;
 use App\Services\Admin\UserService;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
 class AdminController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     protected $userService;
     protected $issueService;
@@ -28,12 +29,12 @@ class AdminController extends BaseController
     /**
      * Create a new controller instance.
      *
-     * @param UserService $userService
-     * @param IssueService $issueService
+     * @param UserService    $userService
+     * @param IssueService   $issueService
      * @param PackageService $packageService
-     * @param HomeService $homeService
-     * @param OrderService $orderService
-     * @param LogService $logService
+     * @param HomeService    $homeService
+     * @param OrderService   $orderService
+     * @param LogService     $logService
      *
      * @return void
      */
@@ -49,5 +50,4 @@ class AdminController extends BaseController
         $this->orderService = $orderService;
         $this->logService = $logService;
     }
-
 }

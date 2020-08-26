@@ -14,9 +14,8 @@ class PackageController extends Controller
     public function index()
     {
         return view('package.index', [
-            'title' => __('Packages'),
-            'packages' => Package::all()
+            'title'    => __('Packages'),
+            'packages' => Package::all(),
         ]);
     }
-
 }

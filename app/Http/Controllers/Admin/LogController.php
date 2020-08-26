@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helper\Datatables;
-use Illuminate\Http\Request;
 use App\Http\Controllers\AdminController;
-
+use Illuminate\Http\Request;
 
 class LogController extends AdminController
 {
@@ -18,16 +17,16 @@ class LogController extends AdminController
      */
     public function index(Request $request)
     {
-        if ($request->get('json'))
+        if ($request->get('json')) {
             return response()->json(
                 Datatables::simple($request->all(), 'logs', 'id', $this->logService->getDatatableColumns())
             );
+        }
 
         return view('admin.datatables', [
-            'title' => 'Kullanıcı Logları',
-            'thead' => ['id', 'user_id', 'Eposta', 'Action', 'IP Adresi', 'Tarih'],
-            'columnDefs' => [2]
+            'title'      => 'Kullanıcı Logları',
+            'thead'      => ['id', 'user_id', 'Eposta', 'Action', 'IP Adresi', 'Tarih'],
+            'columnDefs' => [2],
         ]);
     }
-
 }
