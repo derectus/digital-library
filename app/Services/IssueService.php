@@ -80,7 +80,7 @@ class IssueService
             $issue->price * 100,
             $issue->language == 'tr' ? 'TL' : 'USD',
             $user->email,
-            ! empty($user->name) ? $user->name : $user->email,
+            !empty($user->name) ? $user->name : $user->email,
             $user->email,
             $user->email,
             [

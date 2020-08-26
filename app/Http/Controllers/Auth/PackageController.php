@@ -38,7 +38,7 @@ class PackageController extends Controller
     {
         $package = Package::where('slug', $slug)->firstOrFail();
 
-        if (! $package->is_purchased) {
+        if (!$package->is_purchased) {
             $order = $this->packageService->createOrder(Auth::user(), $package);
         }
 
