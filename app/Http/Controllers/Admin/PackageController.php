@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helper\Datatables;
+use App\Http\Controllers\AdminController;
 use App\Issue;
 use App\Package;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Session;
 
 class PackageController extends AdminController
@@ -20,10 +20,11 @@ class PackageController extends AdminController
      */
     public function index(Request $request)
     {
-        if ($request->get('json'))
+        if ($request->get('json')) {
             return response()->json(
                 Datatables::simple($request->all(), 'packages', 'id', $this->packageService->getDatatableColumns())
             );
+        }
 
         return view('admin.datatables', [
             'title' => 'Paketler',
@@ -39,23 +40,24 @@ class PackageController extends AdminController
     public function create()
     {
         return view('admin.packages.create', [
-            'issues_all_count' => Issue::all('id')->count()
+            'issues_all_count' => Issue::all('id')->count(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string'],
-            'price' => ['required', 'between:0,99.99'],
+            'title'    => ['required', 'string'],
+            'price'    => ['required', 'between:0,99.99'],
             'language' => ['required', 'string', 'regex:(tr|en)'],
-            'issues' => ['required', 'array'],
+            'issues'   => ['required', 'array'],
         ]);
 
         $data = $request->all();
@@ -76,13 +78,14 @@ class PackageController extends AdminController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         return view('admin.packages.edit', [
-            'package' => Package::findOrFail($id),
+            'package'          => Package::findOrFail($id),
             'issues_all_count' => Issue::all('id')->count(),
         ]);
     }
@@ -90,17 +93,18 @@ class PackageController extends AdminController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => ['required', 'string'],
-            'price' => ['required', 'between:0,99.99'],
+            'title'    => ['required', 'string'],
+            'price'    => ['required', 'between:0,99.99'],
             'language' => ['required', 'string', 'regex:(tr|en)'],
-            'issues' => ['required', 'array'],
+            'issues'   => ['required', 'array'],
         ]);
 
         $data = $request->all();
@@ -115,5 +119,4 @@ class PackageController extends AdminController
 
         return redirect()->route('admin.packages.edit', $id);
     }
-
 }

@@ -6,7 +6,6 @@ use App\User;
 
 class OrderService
 {
-
     /**
      * Return datatable columns for Datatable.
      *
@@ -17,40 +16,40 @@ class OrderService
         return [
             ['db' => 'id', 'dt' => 0],
             [
-                'db' => 'user_id',
-                'dt' => 1,
+                'db'        => 'user_id',
+                'dt'        => 1,
                 'formatter' => function ($data, $row) {
                     return User::find($data)->email;
-                }
+                },
             ],
             [
-                'db' => 'language',
-                'dt' => 2,
+                'db'        => 'language',
+                'dt'        => 2,
                 'formatter' => function ($data, $row) {
-                    return ($data == 'tr' ? 'Arka Kapı Dergi' : 'Arka Kapı Magazine');
-                }
+                    return $data == 'tr' ? 'Arka Kapı Dergi' : 'Arka Kapı Magazine';
+                },
             ],
             ['db' => 'issues', 'dt' => 3],
             [
-                'db' => 'status',
-                'dt' => 4,
+                'db'        => 'status',
+                'dt'        => 4,
                 'formatter' => function ($data, $row) {
                     $class = '';
                     $class = $data == 'successful' ? 'success' : $class;
                     $class = $data == 'unsuccessful' ? 'danger' : $class;
                     $class = $data == 'pending' ? 'warning' : $class;
-                    return '<span class="btn btn-sm btn-' . $class . '" > ' . __($data) . ' </span>';
-                }
+
+                    return '<span class="btn btn-sm btn-'.$class.'" > '.__($data).' </span>';
+                },
             ],
             [
-                'db' => 'total',
-                'dt' => 5,
+                'db'        => 'total',
+                'dt'        => 5,
                 'formatter' => function ($data, $row) {
-                    return $data . ' ' . ($row['language'] == 'tr' ? 'TL' : 'USD');
-                }
+                    return $data.' '.($row['language'] == 'tr' ? 'TL' : 'USD');
+                },
             ],
             ['db' => 'created_at', 'dt' => 6],
         ];
     }
-
 }

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Country;
+use App\Http\Controllers\Controller;
 use App\Order;
 use App\Package;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -42,37 +42,39 @@ class UserController extends Controller
     public function profile()
     {
         return view('auth.profile', [
-            'title' => __('Profile'),
-            'user' => Auth::user(),
-            'countries' => Country::all()
+            'title'     => __('Profile'),
+            'user'      => Auth::user(),
+            'countries' => Country::all(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return Redirect
      */
     public function update(Request $request)
     {
         $request->validate([
-            'name' => ['nullable', 'string'],
-            'job' => ['nullable', 'string'],
-            'language' => ['required', 'string', 'regex:(tr|en)'],
+            'name'       => ['nullable', 'string'],
+            'job'        => ['nullable', 'string'],
+            'language'   => ['required', 'string', 'regex:(tr|en)'],
             'country_id' => ['required', 'string', 'exists:countries,id'],
-            'password' => ['nullable', 'string', 'min:6', 'confirmed'],
+            'password'   => ['nullable', 'string', 'min:6', 'confirmed'],
         ]);
 
         $data = [
-            'name' => $request->input('name'),
-            'job' => $request->input('job'),
-            'language' => $request->input('language'),
-            'country_id' => $request->input('country_id')
+            'name'       => $request->input('name'),
+            'job'        => $request->input('job'),
+            'language'   => $request->input('language'),
+            'country_id' => $request->input('country_id'),
         ];
 
-        if ($request->input('password'))
+        if ($request->input('password')) {
             $data['password'] = Hash::make($request->input('password'));
+        }
 
         Auth::user()->update($data);
 
@@ -90,9 +92,9 @@ class UserController extends Controller
     public function myPurchases()
     {
         return view('auth.my-purchases', [
-            'title' => __('My Purchases'),
-            'user' => Auth::user(),
-            'packages' => Package::all()
+            'title'    => __('My Purchases'),
+            'user'     => Auth::user(),
+            'packages' => Package::all(),
         ]);
     }
 
@@ -104,9 +106,8 @@ class UserController extends Controller
     public function orderHistory()
     {
         return view('auth.order-history', [
-            'title' => __('Order History'),
-            'orders' => Order::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get()
+            'title'  => __('Order History'),
+            'orders' => Order::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get(),
         ]);
     }
-
 }

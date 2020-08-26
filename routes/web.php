@@ -52,17 +52,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Users
     Route::resource('/users', 'Admin\UserController')->except([
-        'show', 'destroy'
+        'show', 'destroy',
     ]);
 
     // Issues
     Route::resource('/issues', 'Admin\IssueController')->except([
-        'show', 'destroy'
+        'show', 'destroy',
     ]);
 
     // Packages
     Route::resource('/packages', 'Admin\PackageController')->except([
-        'show', 'destroy'
+        'show', 'destroy',
     ]);
 
     // Order History
@@ -74,5 +74,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Send email
     Route::get('/email', 'Admin\EmailController@form')->name('email.form');
     Route::get('/email/send/{user_id}/{issue_id}', 'Admin\EmailController@send')->name('email.send');
-
 });

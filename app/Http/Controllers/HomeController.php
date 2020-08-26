@@ -14,7 +14,7 @@ class HomeController extends Controller
     public function index()
     {
         return view('pages.home', [
-            'latest_issues' => Issue::orderBy('issue', 'desc')->get()->unique('language')
+            'latest_issues' => Issue::orderBy('issue', 'desc')->get()->unique('language'),
         ]);
     }
 
@@ -26,8 +26,7 @@ class HomeController extends Controller
     public function contact()
     {
         return view('pages.contact', [
-            'title' => __('Contact')
+            'title' => __('Contact'),
         ]);
     }
-
 }

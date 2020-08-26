@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Issue;
 use App\Http\Controllers\Controller;
+use App\Issue;
 use App\Services\IssueService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class IssueController extends Controller
 {
-
     protected $issueService;
 
     /**
@@ -32,14 +31,16 @@ class IssueController extends Controller
      * Buy issue page.
      *
      * @param string $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function buyForm($slug)
     {
         $issue = Issue::where('slug', $slug)->firstOrFail();
 
-        if (!$issue->is_purchased)
+        if (!$issue->is_purchased) {
             $order = $this->issueService->createOrder(Auth::user(), $issue);
+        }
 
         // If user already bought this issue, redirect my purchases page.
         if ($issue->is_purchased) {
@@ -50,8 +51,8 @@ class IssueController extends Controller
         }
 
         return view('pages.paytr_form', [
-            'title' => $issue->title . ' ' . __('Buy'),
-            'token' => $this->issueService->getToken(Auth::user(), $issue, $order)
+            'title' => $issue->title.' '.__('Buy'),
+            'token' => $this->issueService->getToken(Auth::user(), $issue, $order),
         ]);
     }
 
@@ -59,14 +60,16 @@ class IssueController extends Controller
      * Read issue page.
      *
      * @param string $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function read($slug)
     {
         $issue = Issue::where('slug', $slug)->firstOrFail();
+
         return view('issue.read', [
             'title' => $issue->title,
-            'issue' => $issue
+            'issue' => $issue,
         ]);
     }
 
@@ -74,6 +77,7 @@ class IssueController extends Controller
      * Get issue PDF.
      *
      * @param string $slug
+     *
      * @return \Illuminate\Http\Response
      */
     public function pdf($slug)
@@ -81,10 +85,10 @@ class IssueController extends Controller
         $issue = Issue::where('slug', $slug)->firstOrFail();
 
         // If user not have access this to issue
-        if (!Auth::user()->is_admin && !$issue->is_purchased)
+        if (!Auth::user()->is_admin && !$issue->is_purchased) {
             abort(403);
+        }
 
-        return response()->file(storage_path('app/' . $slug . '.pdf'));
+        return response()->file(storage_path('app/'.$slug.'.pdf'));
     }
-
 }

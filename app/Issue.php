@@ -13,7 +13,7 @@ class Issue extends Model
      * @var array
      */
     protected $fillable = [
-        'slug', 'title', 'issue', 'price', 'month', 'language', 'preamble', 'content'
+        'slug', 'title', 'issue', 'price', 'month', 'language', 'preamble', 'content',
     ];
 
     /**
@@ -22,15 +22,16 @@ class Issue extends Model
      * @var array
      */
     protected $appends = [
-        'is_purchased'
+        'is_purchased',
     ];
 
     public function getIsPurchasedAttribute()
     {
-        if (!Auth::check())
+        if (!Auth::check()) {
             return false;
+        }
 
-        $purchases = Auth::user()->{'purchases_' . $this->language};
+        $purchases = Auth::user()->{'purchases_'.$this->language};
 
         return in_array($this->issue, $purchases);
     }

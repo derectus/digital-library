@@ -15,12 +15,12 @@ class PackageService
      * Assign package to user.
      *
      * @param Authenticatable $user
-     * @param Package $package
-     * @param Order $order
+     * @param Package         $package
+     * @param Order           $order
      */
     public function assignPackageToUser(Authenticatable $user, Package $package, Order $order)
     {
-        $purchases = $user->{'purchases_' . $package->language};
+        $purchases = $user->{'purchases_'.$package->language};
 
         $purchases = array_unique(array_merge(
             $purchases,
@@ -29,7 +29,7 @@ class PackageService
 
         asort($purchases);
 
-        $user->{'purchases_' . $package->language} = array_values($purchases);
+        $user->{'purchases_'.$package->language} = array_values($purchases);
         $user->save();
 
         // Trigger events
@@ -40,7 +40,7 @@ class PackageService
      * Create order and assign issue if issue is free.
      *
      * @param Authenticatable $user
-     * @param Package $package
+     * @param Package         $package
      *
      * @return Order $order
      */
@@ -48,18 +48,18 @@ class PackageService
     {
         // create order
         $order = Order::create([
-            'user_id' => $user->id,
+            'user_id'  => $user->id,
             'language' => $package->language,
-            'issues' => $package->issues,
-            'status' => 'pending',
-            'total' => $package->price
+            'issues'   => $package->issues,
+            'status'   => 'pending',
+            'total'    => $package->price,
         ]);
 
         // If package is free, auto buy.
         if ($package->price == 0) {
             $this->assignPackageToUser(Auth::user(), $package, $order);
             $order->update([
-                'status' => 'successful'
+                'status' => 'successful',
             ]);
         }
 
@@ -70,8 +70,8 @@ class PackageService
      * Get PayTR token for payment form.
      *
      * @param Authenticatable $user
-     * @param Package $package
-     * @param Order $order
+     * @param Package         $package
+     * @param Order           $order
      *
      * @return string
      */
@@ -89,8 +89,8 @@ class PackageService
                 [
                     $package->title,
                     $package->price,
-                    1
-                ]
+                    1,
+                ],
             ]
         );
     }

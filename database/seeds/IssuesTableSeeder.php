@@ -13,13 +13,13 @@ class IssuesTableSeeder extends Seeder
     {
         $issues = [
             [
-                'slug' => 'arka-kapi-dergi-sayi-1',
-                'title' => 'Arka Kapı Dergi Sayı 1',
-                'issue' => 1,
-                'price' => 9.99,
-                'month' => '02-03 2018',
+                'slug'     => 'arka-kapi-dergi-sayi-1',
+                'title'    => 'Arka Kapı Dergi Sayı 1',
+                'issue'    => 1,
+                'price'    => 9.99,
+                'month'    => '02-03 2018',
                 'language' => 'tr',
-                'content' => '<ul>
+                'content'  => '<ul>
     <li>Web 2014’te Ölmeye Başladı -  André Staltz</li>
     <li>Ağ Tarafsızlığı - Av. Mehmet Pehlivan</li>
     <li>Her 8 Kişiden 1’inin Parolası Biliniyor! - Mustafa Altınkaynak</li>
@@ -60,16 +60,16 @@ Altınok</li>
 <p>Dergi toplantıları esnasında vefat haberini aldığımız Mustafa Akgül Hoca’mızı da rahmet ve ülkemize kattıklarından ötürü şükran ile anıyoruz.</p>
 <p>Yeni bir sayıda görüşmek dileği ile...</p>',
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'slug' => 'arka-kapi-dergi-sayi-2',
-                'title' => 'Arka Kapı Dergi Sayı 2',
-                'issue' => 2,
-                'price' => 9.99,
-                'month' => '04-05 2018',
+                'slug'     => 'arka-kapi-dergi-sayi-2',
+                'title'    => 'Arka Kapı Dergi Sayı 2',
+                'issue'    => 2,
+                'price'    => 9.99,
+                'month'    => '04-05 2018',
                 'language' => 'tr',
-                'content' => '<ul>
+                'content'  => '<ul>
 	<li>Haberler</li>
 	<li>Siber Takvim</li>
 	<li>GPS Olmadan Kullanıcıları İzlemenin Farklı Bir Yolu</li>
@@ -118,16 +118,16 @@ bendenizi de yarattıklarına hizmetle ve hürmetle anneciğimin kapanmayan amel
 <p>Bir teknoloji dergisi için çok duygusal satırlar. Af buyurun!</p>
 <p>Takdir edersiniz ki hayat sayılardan ve vesilelerden öte...</p>',
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'slug' => 'arka-kapi-dergi-sayi-3',
-                'title' => 'Arka Kapı Dergi Sayı 3',
-                'issue' => 3,
-                'price' => 9.99,
-                'month' => '06-07 2018',
+                'slug'     => 'arka-kapi-dergi-sayi-3',
+                'title'    => 'Arka Kapı Dergi Sayı 3',
+                'issue'    => 3,
+                'price'    => 9.99,
+                'month'    => '06-07 2018',
                 'language' => 'tr',
-                'content' => '<ul>
+                'content'  => '<ul>
 	<li>Haberler</li>
 	<li>Siber Takvim</li>
 	<li>Mit Temas Sergisi</li>
@@ -200,16 +200,16 @@ o eski dünya değil.</p>
 <p>Yeni bir sayıda görüşebilmek ümidiyle. Sevgiler.</p>
 <p>* National Security Agency - Ulusal Güvenlik Ajansı</p>',
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'slug' => 'arka-kapi-dergi-sayi-4',
-                'title' => 'Arka Kapı Dergi Sayı 4',
-                'issue' => 4,
-                'price' => 9.99,
-                'month' => '08-09 2018',
+                'slug'     => 'arka-kapi-dergi-sayi-4',
+                'title'    => 'Arka Kapı Dergi Sayı 4',
+                'issue'    => 4,
+                'price'    => 9.99,
+                'month'    => '08-09 2018',
                 'language' => 'tr',
-                'content' => '<ul>
+                'content'  => '<ul>
 	<li>“Özgür” Ansiklopedi Wikipedia ile Yaptığımız Röportaj</li>
 	<li>Siber Takvim</li>
 	<li>Temmuz-Ağustos</li>
@@ -265,16 +265,16 @@ Wikipedia’dan doğrudan soruların yanıtlarını talep edebilirler.</p>
 <p>Ve lütfen cevapsız kalan bu soruları arkadaşlarınızla da paylaşınız,
 çünkü onlar Wikipedia’yı hâlâ özgür sanıyor.</p>',
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'slug' => 'arka-kapi-dergi-sayi-5',
-                'title' => 'Arka Kapı Dergi Sayı 5',
-                'issue' => 5,
-                'price' => 9.99,
-                'month' => '10-11 2018',
+                'slug'     => 'arka-kapi-dergi-sayi-5',
+                'title'    => 'Arka Kapı Dergi Sayı 5',
+                'issue'    => 5,
+                'price'    => 9.99,
+                'month'    => '10-11 2018',
                 'language' => 'tr',
-                'content' => '<ul><li>Aralık ‘18 - Ocak ‘19 Siber Güvenlik &amp; Bilişim Etkinlikleri - Arka Kapı Dergi</li><li>Kripto Para Haberleri - uzmancoin.com</li><li>Siber Güvenlik Çalışmaları Kapsamında İstanbul Millî Eğitim Müdürlüğü ile Söyleşi - Cafer Uluç</li><li>Siber Güvenliğin Gelecek 30 Yılı İçin Kehanetler - Utku Şen</li><li>Insight’in Düşündürdükleri: Güvenliğin ve Güvenilirliğin Geleceği - Chris Stephenson</li><li>3VE: Hollywood Filmlerini Aratmayan bir Dolandırıcılık Hikâyesi - Ümran Yıldırımkaya</li><li>Havayolu Şirketleri Hangi Kişisel Bilgileri, Neden Topluyor? - Dr. Ferhat Dikbıyık</li><li>Veri Tabanı Saldırıları ve Korunma Yöntemleri - Ömer Faruk Çolakoğlu</li><li>Çarşıda Buldum Bir Tane: Escrow Ödeme Altyapısını Kullanan Yüzlerce Siteyi Etkileyen Zafiyet - Berk Düşünür</li><li>Google’ın bildiği sır değildir! - Yusuf Şahin</li><li>Kendi Virüsünü Kendin Yaz: LockDown - Bener Kaya</li><li>Örnek Vakalarla Adli Bilişim Olay 2: X-Files: Bu Dosyalar Nereden Geldi? - Koray Peksayar</li><li>Suçluları yakalamak için, işinde “kötü” olmak zorundasın! - Utku Şen</li><li>Richard Greenblatt: Eski Hacker’lardan Kim Kaldı? - Cansu Topukçu</li><li>Güneşin Altında Söylenecek Çok Söz var Kuzey Koreli Hacker Grubu Lazarus - Onur Oktay</li><li>II. Dünya Savaşı’nın Kriptoloji Cephesi - Enigma Şifreleme Makinesi - Bayram Gök</li><li>Scapy ile Network Programlama 1 - Güray Yıldırım</li><li>Yazılımcılar için Okuma Listesi - Muhammed Hilmi Koca</li><li>ECHOLINK: Telsiz &amp; İnternet Birlikteliği Üzerine - Murat Kaygısız</li></ul>',
+                'content'  => '<ul><li>Aralık ‘18 - Ocak ‘19 Siber Güvenlik &amp; Bilişim Etkinlikleri - Arka Kapı Dergi</li><li>Kripto Para Haberleri - uzmancoin.com</li><li>Siber Güvenlik Çalışmaları Kapsamında İstanbul Millî Eğitim Müdürlüğü ile Söyleşi - Cafer Uluç</li><li>Siber Güvenliğin Gelecek 30 Yılı İçin Kehanetler - Utku Şen</li><li>Insight’in Düşündürdükleri: Güvenliğin ve Güvenilirliğin Geleceği - Chris Stephenson</li><li>3VE: Hollywood Filmlerini Aratmayan bir Dolandırıcılık Hikâyesi - Ümran Yıldırımkaya</li><li>Havayolu Şirketleri Hangi Kişisel Bilgileri, Neden Topluyor? - Dr. Ferhat Dikbıyık</li><li>Veri Tabanı Saldırıları ve Korunma Yöntemleri - Ömer Faruk Çolakoğlu</li><li>Çarşıda Buldum Bir Tane: Escrow Ödeme Altyapısını Kullanan Yüzlerce Siteyi Etkileyen Zafiyet - Berk Düşünür</li><li>Google’ın bildiği sır değildir! - Yusuf Şahin</li><li>Kendi Virüsünü Kendin Yaz: LockDown - Bener Kaya</li><li>Örnek Vakalarla Adli Bilişim Olay 2: X-Files: Bu Dosyalar Nereden Geldi? - Koray Peksayar</li><li>Suçluları yakalamak için, işinde “kötü” olmak zorundasın! - Utku Şen</li><li>Richard Greenblatt: Eski Hacker’lardan Kim Kaldı? - Cansu Topukçu</li><li>Güneşin Altında Söylenecek Çok Söz var Kuzey Koreli Hacker Grubu Lazarus - Onur Oktay</li><li>II. Dünya Savaşı’nın Kriptoloji Cephesi - Enigma Şifreleme Makinesi - Bayram Gök</li><li>Scapy ile Network Programlama 1 - Güray Yıldırım</li><li>Yazılımcılar için Okuma Listesi - Muhammed Hilmi Koca</li><li>ECHOLINK: Telsiz &amp; İnternet Birlikteliği Üzerine - Murat Kaygısız</li></ul>',
                 'preamble' => '<p>Geçtiğimiz 10 Aralık İnsan Hakları Evrensel Bildigesi’nin 70. yıldönümü idi.</p>
 <p>Spartaküs’den günümüze insanlığın tırnakları ile yazdığı bir destanın
 en billur hali.</p>
@@ -318,16 +318,16 @@ toplumun kendisidir.</p>
 hepsinden de öte özgürleşmesine vakfeden Mustafa Akgül Hoca’yı bu
 vesile ile rahmet ve minnet ile anıyoruz.</p>',
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'slug' => 'arka-kapi-dergi-sayi-6',
-                'title' => 'Arka Kapı Dergi Sayı 6',
-                'issue' => 6,
-                'price' => 9.99,
-                'month' => '12-01 2019',
+                'slug'     => 'arka-kapi-dergi-sayi-6',
+                'title'    => 'Arka Kapı Dergi Sayı 6',
+                'issue'    => 6,
+                'price'    => 9.99,
+                'month'    => '12-01 2019',
                 'language' => 'tr',
-                'content' => '<ul>
+                'content'  => '<ul>
 	<li>Şubat ‘19 Siber Güvenlik & Bilişim Etkinlikleri • Arka Kapı Dergi</li>
 	<li>Kripto Para Haberleri - Uzmancoin.com</li>
 	<li>Kubilay Onur Güngör Söyleşi: Cyber Struggle</li>
@@ -380,16 +380,16 @@ dertlenen kişilerle olsun!</p>
 <p>Gayemiz ve çabamız budur.</p>
 <p>“Bir umudum sende! Anlıyor musun?”</p>',
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'slug' => 'arka-kapi-magazine-issue-1',
-                'title' => 'Arka Kapı Magazine Issue 1',
-                'issue' => 1,
-                'price' => 9.99,
-                'month' => '09-10 2018',
+                'slug'     => 'arka-kapi-magazine-issue-1',
+                'title'    => 'Arka Kapı Magazine Issue 1',
+                'issue'    => 1,
+                'price'    => 9.99,
+                'month'    => '09-10 2018',
                 'language' => 'en',
-                'content' => '<ul>
+                'content'  => '<ul>
  	<li>Set up your VPN with My Connection</li>
  	<li>Introduction to Cryptology</li>
  	<li>Chain of Independence: Blockchain</li>
@@ -427,16 +427,16 @@ millions through Cambridge Analytica.</p>
 <p>As Snowden says, ‘Let’s take back the internet!’</p>
 <p>Special thanks to Netsparker Ltd. for bringing our first issue alive</p>',
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'slug' => 'arka-kapi-magazine-issue-2',
-                'title' => 'Arka Kapı Magazine Issue 2',
-                'issue' => 2,
-                'price' => 9.99,
-                'month' => '11-12 2018',
+                'slug'     => 'arka-kapi-magazine-issue-2',
+                'title'    => 'Arka Kapı Magazine Issue 2',
+                'issue'    => 2,
+                'price'    => 9.99,
+                'month'    => '11-12 2018',
                 'language' => 'en',
-                'content' => '<ul>
+                'content'  => '<ul>
  	<li>Cyber Security Conferences - Ayşenur Burak</li>
  	<li>WiPi Hunter Detecting - Besim Altınok</li>
  	<li>Web Application Firewall (WAF) Bypassing Methods - Ulaş Fırat Özdemir</li>
@@ -492,16 +492,16 @@ article “An Offensive Touch to the Defensive World.”</p>
 Arka Kapı Magazine.</p>
 <p>Special thanks to Netsparker Ltd. for sponsoring our second issue</p>',
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'slug' => 'arka-kapi-magazine-issue-3',
-                'title' => 'Arka Kapı Magazine Issue 3',
-                'issue' => 3,
-                'price' => 9.99,
-                'month' => '01-02 2019',
+                'slug'     => 'arka-kapi-magazine-issue-3',
+                'title'    => 'Arka Kapı Magazine Issue 3',
+                'issue'    => 3,
+                'price'    => 9.99,
+                'month'    => '01-02 2019',
                 'language' => 'en',
-                'content' => '<ul>
+                'content'  => '<ul>
 	<li>Cyber Security Conferences - Ayşenur Burak</li>
 	<li>Cryptology In Industrial Revolution - Bayram Gök</li>
 	<li>The 10 Biggest Hacks Of 2018 - Arka Kapi Magazine</li>
@@ -557,8 +557,8 @@ and attacks, as well as some offline systems and more.</p>
 come from to protect yourself- and your rights!</p>
 <p>Special thanks to Netsparker Ltd. for sponsoring this issue!</p>',
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ]
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
         ];
 
         \App\Issue::insert($issues);

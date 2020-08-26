@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Session;
 
 class PackageController extends Controller
 {
-
     protected $packageService;
 
     /**
@@ -32,14 +31,16 @@ class PackageController extends Controller
      * Buy package page.
      *
      * @param string $slug
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function buyForm($slug)
     {
         $package = Package::where('slug', $slug)->firstOrFail();
 
-        if (!$package->is_purchased)
+        if (!$package->is_purchased) {
             $order = $this->packageService->createOrder(Auth::user(), $package);
+        }
 
         // If user already bought this package, redirect my purchases page.
         if ($package->is_purchased) {
@@ -50,9 +51,8 @@ class PackageController extends Controller
         }
 
         return view('pages.paytr_form', [
-            'title' => $package->title . ' ' . __('Buy'),
-            'token' => $this->packageService->getToken(Auth::user(), $package, $order)
+            'title' => $package->title.' '.__('Buy'),
+            'token' => $this->packageService->getToken(Auth::user(), $package, $order),
         ]);
     }
-
 }

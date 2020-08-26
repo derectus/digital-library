@@ -13,7 +13,7 @@ class Package extends Model
      * @var array
      */
     protected $fillable = [
-        'slug', 'title', 'language', 'price', 'issues'
+        'slug', 'title', 'language', 'price', 'issues',
     ];
 
     /**
@@ -22,25 +22,27 @@ class Package extends Model
      * @var array
      */
     protected $appends = [
-        'is_purchased', 'purchased_issues', 'exist_issues'
+        'is_purchased', 'purchased_issues', 'exist_issues',
     ];
 
     public function getIsPurchasedAttribute()
     {
-        if (!Auth::check())
+        if (!Auth::check()) {
             return false;
+        }
 
-        $purchases = Auth::user()->{'purchases_' . $this->language};
+        $purchases = Auth::user()->{'purchases_'.$this->language};
 
         return count(array_intersect($this->issues, $purchases)) == count($this->issues);
     }
 
     public function getPurchasedIssuesAttribute()
     {
-        if (!Auth::check())
+        if (!Auth::check()) {
             return null;
+        }
 
-        $purchases = Auth::user()->{'purchases_' . $this->language};
+        $purchases = Auth::user()->{'purchases_'.$this->language};
 
         return array_values(array_intersect($this->issues, $purchases));
     }
@@ -53,7 +55,8 @@ class Package extends Model
     /**
      * Accessor for issues.
      *
-     * @param  string $value
+     * @param string $value
+     *
      * @return array
      */
     public function getIssuesAttribute($value)
@@ -64,12 +67,12 @@ class Package extends Model
     /**
      * Mutator for issues.
      *
-     * @param  array $value
+     * @param array $value
      */
     public function setIssuesAttribute($value)
     {
         $value = array_map(function ($val) {
-            return (int)$val;
+            return (int) $val;
         }, $value);
 
         $this->attributes['issues'] = json_encode($value);

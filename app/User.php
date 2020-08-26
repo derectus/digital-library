@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -16,7 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'country_id', 'job', 'is_banned', 'is_admin', 'language', 'purchases_tr', 'purchases_en'
+        'name', 'email', 'password', 'country_id', 'job', 'is_banned', 'is_admin', 'language', 'purchases_tr', 'purchases_en',
     ];
 
     /**
@@ -43,7 +43,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $appends = [
-        'total_tl', 'total_usd'
+        'total_tl', 'total_usd',
     ];
 
     public function country()
@@ -65,6 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * Accessor for purchases_tr.
      *
      * @param string $value
+     *
      * @return array
      */
     public function getPurchasesTrAttribute($value)
@@ -80,7 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function setPurchasesTrAttribute($value)
     {
         $value = array_map(function ($val) {
-            return (int)$val;
+            return (int) $val;
         }, $value);
 
         $this->attributes['purchases_tr'] = json_encode($value);
@@ -90,6 +91,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * Accessor for purchases_en.
      *
      * @param string $value
+     *
      * @return array
      */
     public function getPurchasesEnAttribute($value)
@@ -105,7 +107,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function setPurchasesEnAttribute($value)
     {
         $value = array_map(function ($val) {
-            return (int)$val;
+            return (int) $val;
         }, $value);
 
         $this->attributes['purchases_en'] = json_encode($value);

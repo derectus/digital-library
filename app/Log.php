@@ -12,7 +12,7 @@ class Log extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'action', 'ip_address'
+        'user_id', 'action', 'ip_address',
     ];
 
     public function user()

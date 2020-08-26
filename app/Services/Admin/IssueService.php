@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class IssueService
 {
-
     /**
      * Return datatable columns for Datatable.
      *
@@ -21,62 +20,66 @@ class IssueService
             ['db' => 'title', 'dt' => 1],
             ['db' => 'issue', 'dt' => 2],
             [
-                'db' => 'price',
-                'dt' => 3,
+                'db'        => 'price',
+                'dt'        => 3,
                 'formatter' => function ($data, $row) {
-                    return $data . ' ' . ($row['language'] == 'tr' ? 'TL' : 'USD');
-                }
+                    return $data.' '.($row['language'] == 'tr' ? 'TL' : 'USD');
+                },
             ],
             ['db' => 'month', 'dt' => 4],
             [
-                'db' => 'language',
-                'dt' => 5,
+                'db'        => 'language',
+                'dt'        => 5,
                 'formatter' => function ($data) {
-                    if ($data == 'tr')
+                    if ($data == 'tr') {
                         return '<span class="label label-success">Türkçe (Arka Kapı Dergi)</span>';
+                    }
+
                     return '<span class="label label-info">İngilizce (Arka Kapı Magazine)</span>';
-                }
+                },
             ],
             [
-                'db' => 'slug',
-                'dt' => 6,
+                'db'        => 'slug',
+                'dt'        => 6,
                 'formatter' => function ($data) {
-                    return '<a href="' . config('app.url') . '/storage/' . $data . '.jpg" target="_blank">' . $data . '.jpg</a>';
-                }
+                    return '<a href="'.config('app.url').'/storage/'.$data.'.jpg" target="_blank">'.$data.'.jpg</a>';
+                },
             ],
             [
-                'db' => 'id',
-                'dt' => 7,
+                'db'        => 'id',
+                'dt'        => 7,
                 'formatter' => function ($data) {
-                    return '<a href="' . route('admin.issues.edit', $data) . '" class="btn btn-sm btn-primary">Düzenle</a>';
-                }
-            ]
+                    return '<a href="'.route('admin.issues.edit', $data).'" class="btn btn-sm btn-primary">Düzenle</a>';
+                },
+            ],
         ];
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function store(Request $request)
     {
         // Create title
-        $title = 'Arka Kapı Dergi Sayı ' . $request->input('issue');
-        if ($request->input('language') == 'en')
-            $title = 'Arka Kapı Magazine Issue ' . $request->input('issue');
+        $title = 'Arka Kapı Dergi Sayı '.$request->input('issue');
+        if ($request->input('language') == 'en') {
+            $title = 'Arka Kapı Magazine Issue '.$request->input('issue');
+        }
 
         // Create slug
         $slug = str_slug($title, '-', 'tr');
 
         // Upload Cover
         $cover = $request->file('cover');
-        Storage::disk('public')->put($slug . '.jpg', file_get_contents($cover));
+        Storage::disk('public')->put($slug.'.jpg', file_get_contents($cover));
 
         // Upload PDF
         $pdf = $request->file('pdf');
-        Storage::disk('local')->put($slug . '.pdf', file_get_contents($pdf));
+        Storage::disk('local')->put($slug.'.pdf', file_get_contents($pdf));
 
         // Create issue
         $data = $request->all();
@@ -86,23 +89,23 @@ class IssueService
         return $data;
     }
 
- /**
+    /**
      * Update PDF file.
      *
      * @param Request $request
-     * @param Issue $issue
-     * @param string $slug
+     * @param Issue   $issue
+     * @param string  $slug
      */
     public function updatePdf(Request $request, Issue $issue, $slug)
     {
         // Upload new PDF
         if (!is_null($request->file('pdf'))) {
             $pdf = $request->file('pdf');
-            Storage::disk('local')->delete($issue->slug . '.pdf');
-            Storage::disk('local')->put($slug . '.pdf', file_get_contents($pdf));
-        } else if ($issue->slug != $slug) {
+            Storage::disk('local')->delete($issue->slug.'.pdf');
+            Storage::disk('local')->put($slug.'.pdf', file_get_contents($pdf));
+        } elseif ($issue->slug != $slug) {
             // If changed title and not selected any pdf, change pdf file name
-            Storage::disk('local')->move($issue->slug . '.pdf', $slug . '.pdf');
+            Storage::disk('local')->move($issue->slug.'.pdf', $slug.'.pdf');
         }
     }
 
@@ -110,20 +113,19 @@ class IssueService
      * Update Cover image file.
      *
      * @param Request $request
-     * @param Issue $issue
-     * @param string $slug
+     * @param Issue   $issue
+     * @param string  $slug
      */
     public function updateCover(Request $request, Issue $issue, $slug)
     {
         // Upload new Cover
         if (!is_null($request->file('cover'))) {
             $cover = $request->file('cover');
-            Storage::disk('public')->delete($issue->slug . '.jpg');
-            Storage::disk('public')->put($slug . '.jpg', file_get_contents($cover));
-        } else if ($issue->slug != $slug ) {
+            Storage::disk('public')->delete($issue->slug.'.jpg');
+            Storage::disk('public')->put($slug.'.jpg', file_get_contents($cover));
+        } elseif ($issue->slug != $slug) {
             // If changed title and not selected any cover, change cover file name
-            Storage::disk('public')->move($issue->slug . '.jpg', $slug . '.jpg');
+            Storage::disk('public')->move($issue->slug.'.jpg', $slug.'.jpg');
         }
     }
-
 }

@@ -20,13 +20,13 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [
-            SendEmailVerificationNotification::class
+            SendEmailVerificationNotification::class,
         ],
         UserAdded::class => [
-            SendWelcomeEmail::class
+            SendWelcomeEmail::class,
         ],
         OrderAdded::class => [
-            SendPurchasedEmail::class
+            SendPurchasedEmail::class,
         ],
         'Illuminate\Auth\Events\Login' => [
             CreateUserLoginLog::class,

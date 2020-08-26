@@ -23,18 +23,19 @@ use PDOException;
 class Datatables
 {
     /**
-     * Create the data output array for the DataTables rows
+     * Create the data output array for the DataTables rows.
      *
-     * @param  array $columns Column information array
-     * @param  array $data Data from the SQL get
-     * @return array          Formatted data in a row based format
+     * @param array $columns Column information array
+     * @param array $data    Data from the SQL get
+     *
+     * @return array Formatted data in a row based format
      */
-    static function data_output($columns, $data)
+    public static function data_output($columns, $data)
     {
-        $out = array();
+        $out = [];
 
         for ($i = 0, $ien = count($data); $i < $ien; $i++) {
-            $row = array();
+            $row = [];
 
             for ($j = 0, $jen = count($columns); $j < $jen; $j++) {
                 $column = $columns[$j];
@@ -53,21 +54,21 @@ class Datatables
         return $out;
     }
 
-
     /**
-     * Database connection
+     * Database connection.
      *
      * Obtain an PHP PDO connection from a connection details array
      *
-     * @param  array $conn SQL connection details. The array should have
-     *    the following properties
-     *     * host - host name
-     *     * db   - database name
-     *     * user - user name
-     *     * pass - user password
+     * @param array $conn SQL connection details. The array should have
+     *                    the following properties
+     *                    * host - host name
+     *                    * db   - database name
+     *                    * user - user name
+     *                    * pass - user password
+     *
      * @return resource PDO connection
      */
-    static function db($conn)
+    public static function db($conn)
     {
         if (is_array($conn)) {
             return self::sql_connect($conn);
@@ -76,43 +77,43 @@ class Datatables
         return $conn;
     }
 
-
     /**
-     * Paging
+     * Paging.
      *
      * Construct the LIMIT clause for server-side processing SQL query
      *
-     * @param  array $request Data sent to server by DataTables
-     * @param  array $columns Column information array
+     * @param array $request Data sent to server by DataTables
+     * @param array $columns Column information array
+     *
      * @return string SQL limit clause
      */
-    static function limit($request, $columns)
+    public static function limit($request, $columns)
     {
         $limit = '';
 
         if (isset($request['start']) && $request['length'] != -1) {
-            $limit = "LIMIT " . intval($request['start']) . ", " . intval($request['length']);
+            $limit = 'LIMIT '.intval($request['start']).', '.intval($request['length']);
         }
 
         return $limit;
     }
 
-
     /**
-     * Ordering
+     * Ordering.
      *
      * Construct the ORDER BY clause for server-side processing SQL query
      *
-     * @param  array $request Data sent to server by DataTables
-     * @param  array $columns Column information array
+     * @param array $request Data sent to server by DataTables
+     * @param array $columns Column information array
+     *
      * @return string SQL order by clause
      */
-    static function order($request, $columns)
+    public static function order($request, $columns)
     {
         $order = '';
 
         if (isset($request['order']) && count($request['order'])) {
-            $orderBy = array();
+            $orderBy = [];
             $dtColumns = self::pluck($columns, 'dt');
 
             for ($i = 0, $ien = count($request['order']); $i < $ien; $i++) {
@@ -128,19 +129,18 @@ class Datatables
                         'ASC' :
                         'DESC';
 
-                    $orderBy[] = '`' . $column['db'] . '` ' . $dir;
+                    $orderBy[] = '`'.$column['db'].'` '.$dir;
                 }
             }
 
-            $order = 'ORDER BY ' . implode(', ', $orderBy);
+            $order = 'ORDER BY '.implode(', ', $orderBy);
         }
 
         return $order;
     }
 
-
     /**
-     * Searching / Filtering
+     * Searching / Filtering.
      *
      * Construct the WHERE clause for server-side processing SQL query.
      *
@@ -148,16 +148,17 @@ class Datatables
      * word by word on any field. It's possible to do here performance on large
      * databases would be very poor
      *
-     * @param  array $request Data sent to server by DataTables
-     * @param  array $columns Column information array
-     * @param  array $bindings Array of values for PDO bindings, used in the
-     *    sql_exec() function
+     * @param array $request  Data sent to server by DataTables
+     * @param array $columns  Column information array
+     * @param array $bindings Array of values for PDO bindings, used in the
+     *                        sql_exec() function
+     *
      * @return string SQL where clause
      */
-    static function filter($request, $columns, &$bindings)
+    public static function filter($request, $columns, &$bindings)
     {
-        $globalSearch = array();
-        $columnSearch = array();
+        $globalSearch = [];
+        $columnSearch = [];
         $dtColumns = self::pluck($columns, 'dt');
 
         if (isset($request['search']) && $request['search']['value'] != '') {
@@ -169,8 +170,8 @@ class Datatables
                 $column = $columns[$columnIdx];
 
                 if ($requestColumn['searchable'] == 'true') {
-                    $binding = self::bind($bindings, '%' . $str . '%', PDO::PARAM_STR);
-                    $globalSearch[] = "`" . $column['db'] . "` LIKE " . $binding;
+                    $binding = self::bind($bindings, '%'.$str.'%', PDO::PARAM_STR);
+                    $globalSearch[] = '`'.$column['db'].'` LIKE '.$binding;
                 }
             }
         }
@@ -187,8 +188,8 @@ class Datatables
                 if ($requestColumn['searchable'] == 'true' &&
                     $str != ''
                 ) {
-                    $binding = self::bind($bindings, '%' . $str . '%', PDO::PARAM_STR);
-                    $columnSearch[] = "`" . $column['db'] . "` LIKE " . $binding;
+                    $binding = self::bind($bindings, '%'.$str.'%', PDO::PARAM_STR);
+                    $columnSearch[] = '`'.$column['db'].'` LIKE '.$binding;
                 }
             }
         }
@@ -197,22 +198,21 @@ class Datatables
         $where = '';
 
         if (count($globalSearch)) {
-            $where = '(' . implode(' OR ', $globalSearch) . ')';
+            $where = '('.implode(' OR ', $globalSearch).')';
         }
 
         if (count($columnSearch)) {
             $where = $where === '' ?
                 implode(' AND ', $columnSearch) :
-                $where . ' AND ' . implode(' AND ', $columnSearch);
+                $where.' AND '.implode(' AND ', $columnSearch);
         }
 
         if ($where !== '') {
-            $where = 'WHERE ' . $where;
+            $where = 'WHERE '.$where;
         }
 
         return $where;
     }
-
 
     /**
      * Perform the SQL queries needed for an server-side processing requested,
@@ -221,23 +221,24 @@ class Datatables
      * in response to an SSP request, or can be modified if needed before
      * sending back to the client.
      *
-     * @param  array $request Data sent to server by DataTables
-     * @param  array|PDO $conn PDO connection resource or connection parameters array
-     * @param  string $table SQL table to query
-     * @param  string $primaryKey Primary key of the table
-     * @param  array $columns Column information array
-     * @return array          Server-side processing response array
+     * @param array     $request    Data sent to server by DataTables
+     * @param array|PDO $conn       PDO connection resource or connection parameters array
+     * @param string    $table      SQL table to query
+     * @param string    $primaryKey Primary key of the table
+     * @param array     $columns    Column information array
+     *
+     * @return array Server-side processing response array
      */
-    static function simple($request, $table, $primaryKey, $columns)
+    public static function simple($request, $table, $primaryKey, $columns)
     {
-        $bindings = array();
+        $bindings = [];
 
-        $conn = array(
+        $conn = [
             'user' => env('DB_USERNAME'),
             'pass' => env('DB_PASSWORD'),
-            'db' => env('DB_DATABASE'),
-            'host' => env('DB_HOST')
-        );
+            'db'   => env('DB_DATABASE'),
+            'host' => env('DB_HOST'),
+        ];
         $db = self::db($conn);
 
         // Build the SQL query string from the request
@@ -246,8 +247,10 @@ class Datatables
         $where = self::filter($request, $columns, $bindings);
 
         // Main query to actually get the data
-        $data = self::sql_exec($db, $bindings,
-            "SELECT `" . implode("`, `", self::pluck($columns, 'db')) . "`
+        $data = self::sql_exec(
+            $db,
+            $bindings,
+            'SELECT `'.implode('`, `', self::pluck($columns, 'db'))."`
 			 FROM `$table`
 			 $where
 			 $order
@@ -255,7 +258,9 @@ class Datatables
         );
 
         // Data set length after filtering
-        $resFilterLength = self::sql_exec($db, $bindings,
+        $resFilterLength = self::sql_exec(
+            $db,
+            $bindings,
             "SELECT COUNT(`{$primaryKey}`)
 			 FROM   `$table`
 			 $where"
@@ -263,7 +268,8 @@ class Datatables
         $recordsFiltered = $resFilterLength[0][0];
 
         // Total data set length
-        $resTotalLength = self::sql_exec($db,
+        $resTotalLength = self::sql_exec(
+            $db,
             "SELECT COUNT(`{$primaryKey}`)
 			 FROM   `$table`"
         );
@@ -272,21 +278,20 @@ class Datatables
         /*
          * Output
          */
-        return array(
-            "draw" => isset ($request['draw']) ?
+        return [
+            'draw' => isset($request['draw']) ?
                 intval($request['draw']) :
                 0,
-            "recordsTotal" => intval($recordsTotal),
-            "recordsFiltered" => intval($recordsFiltered),
-            "data" => self::data_output($columns, $data)
-        );
+            'recordsTotal'    => intval($recordsTotal),
+            'recordsFiltered' => intval($recordsFiltered),
+            'data'            => self::data_output($columns, $data),
+        ];
     }
-
 
     /**
      * The difference between this method and the `simple` one, is that you can
      * apply additional `where` conditions to the SQL queries. These can be in
-     * one of two forms:
+     * one of two forms:.
      *
      * * 'Result condition' - This is applied to the result set, but not the
      *   overall paging information query - i.e. it will not effect the number
@@ -297,21 +302,22 @@ class Datatables
      *   used in conditions where you don't want the user to ever have access to
      *   particular records (for example, restricting by a login id).
      *
-     * @param  array $request Data sent to server by DataTables
-     * @param  array|PDO $conn PDO connection resource or connection parameters array
-     * @param  string $table SQL table to query
-     * @param  string $primaryKey Primary key of the table
-     * @param  array $columns Column information array
-     * @param  string $whereResult WHERE condition to apply to the result set
-     * @param  string $whereAll WHERE condition to apply to all queries
-     * @return array          Server-side processing response array
+     * @param array     $request     Data sent to server by DataTables
+     * @param array|PDO $conn        PDO connection resource or connection parameters array
+     * @param string    $table       SQL table to query
+     * @param string    $primaryKey  Primary key of the table
+     * @param array     $columns     Column information array
+     * @param string    $whereResult WHERE condition to apply to the result set
+     * @param string    $whereAll    WHERE condition to apply to all queries
+     *
+     * @return array Server-side processing response array
      */
-    static function complex($request, $conn, $table, $primaryKey, $columns, $whereResult = null, $whereAll = null)
+    public static function complex($request, $conn, $table, $primaryKey, $columns, $whereResult = null, $whereAll = null)
     {
-        $bindings = array();
+        $bindings = [];
         $db = self::db($conn);
-        $localWhereResult = array();
-        $localWhereAll = array();
+        $localWhereResult = [];
+        $localWhereAll = [];
         $whereAllSql = '';
 
         // Build the SQL query string from the request
@@ -324,21 +330,23 @@ class Datatables
 
         if ($whereResult) {
             $where = $where ?
-                $where . ' AND ' . $whereResult :
-                'WHERE ' . $whereResult;
+                $where.' AND '.$whereResult :
+                'WHERE '.$whereResult;
         }
 
         if ($whereAll) {
             $where = $where ?
-                $where . ' AND ' . $whereAll :
-                'WHERE ' . $whereAll;
+                $where.' AND '.$whereAll :
+                'WHERE '.$whereAll;
 
-            $whereAllSql = 'WHERE ' . $whereAll;
+            $whereAllSql = 'WHERE '.$whereAll;
         }
 
         // Main query to actually get the data
-        $data = self::sql_exec($db, $bindings,
-            "SELECT `" . implode("`, `", self::pluck($columns, 'db')) . "`
+        $data = self::sql_exec(
+            $db,
+            $bindings,
+            'SELECT `'.implode('`, `', self::pluck($columns, 'db'))."`
 			 FROM `$table`
 			 $where
 			 $order
@@ -346,7 +354,9 @@ class Datatables
         );
 
         // Data set length after filtering
-        $resFilterLength = self::sql_exec($db, $bindings,
+        $resFilterLength = self::sql_exec(
+            $db,
+            $bindings,
             "SELECT COUNT(`{$primaryKey}`)
 			 FROM   `$table`
 			 $where"
@@ -354,9 +364,11 @@ class Datatables
         $recordsFiltered = $resFilterLength[0][0];
 
         // Total data set length
-        $resTotalLength = self::sql_exec($db, $bindings,
+        $resTotalLength = self::sql_exec(
+            $db,
+            $bindings,
             "SELECT COUNT(`{$primaryKey}`)
-			 FROM   `$table` " .
+			 FROM   `$table` ".
             $whereAllSql
         );
         $recordsTotal = $resTotalLength[0][0];
@@ -364,59 +376,59 @@ class Datatables
         /*
          * Output
          */
-        return array(
-            "draw" => isset ($request['draw']) ?
+        return [
+            'draw' => isset($request['draw']) ?
                 intval($request['draw']) :
                 0,
-            "recordsTotal" => intval($recordsTotal),
-            "recordsFiltered" => intval($recordsFiltered),
-            "data" => self::data_output($columns, $data)
-        );
+            'recordsTotal'    => intval($recordsTotal),
+            'recordsFiltered' => intval($recordsFiltered),
+            'data'            => self::data_output($columns, $data),
+        ];
     }
 
-
     /**
-     * Connect to the database
+     * Connect to the database.
      *
-     * @param  array $sql_details SQL server connection details array, with the
-     *   properties:
-     *     * host - host name
-     *     * db   - database name
-     *     * user - user name
-     *     * pass - user password
+     * @param array $sql_details SQL server connection details array, with the
+     *                           properties:
+     *                           * host - host name
+     *                           * db   - database name
+     *                           * user - user name
+     *                           * pass - user password
+     *
      * @return resource Database connection handle
      */
-    static function sql_connect($sql_details)
+    public static function sql_connect($sql_details)
     {
         try {
             $db = @new PDO(
                 "mysql:host={$sql_details['host']};dbname={$sql_details['db']};charset=utf8",
                 $sql_details['user'],
                 $sql_details['pass'],
-                array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+                [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
             );
         } catch (PDOException $e) {
             self::fatal(
-                "An error occurred while connecting to the database. " .
-                "The error reported by the server was: " . $e->getMessage()
+                'An error occurred while connecting to the database. '.
+                'The error reported by the server was: '.$e->getMessage()
             );
         }
 
         return $db;
     }
 
-
     /**
-     * Execute an SQL query on the database
+     * Execute an SQL query on the database.
      *
-     * @param  resource $db Database handler
-     * @param  array $bindings Array of PDO binding values from bind() to be
-     *   used for safely escaping strings. Note that this can be given as the
-     *   SQL query string if no bindings are required.
-     * @param  string $sql SQL query to execute.
-     * @return array         Result from the query (all rows)
+     * @param resource $db       Database handler
+     * @param array    $bindings Array of PDO binding values from bind() to be
+     *                           used for safely escaping strings. Note that this can be given as the
+     *                           SQL query string if no bindings are required.
+     * @param string   $sql      SQL query to execute.
+     *
+     * @return array Result from the query (all rows)
      */
-    static function sql_exec($db, $bindings, $sql = null)
+    public static function sql_exec($db, $bindings, $sql = null)
     {
         // Argument shifting
         if ($sql === null) {
@@ -438,13 +450,12 @@ class Datatables
         try {
             $stmt->execute();
         } catch (PDOException $e) {
-            self::fatal("An SQL error occurred: " . $e->getMessage());
+            self::fatal('An SQL error occurred: '.$e->getMessage());
         }
 
         // Return all
         return $stmt->fetchAll(PDO::FETCH_BOTH);
     }
-
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      * Internal methods
@@ -456,52 +467,53 @@ class Datatables
      * This writes out an error message in a JSON string which DataTables will
      * see and show to the user in the browser.
      *
-     * @param  string $msg Message to send to the client
+     * @param string $msg Message to send to the client
      */
-    static function fatal($msg)
+    public static function fatal($msg)
     {
-        echo json_encode(array(
-            "error" => $msg
-        ));
+        echo json_encode([
+            'error' => $msg,
+        ]);
 
         exit(0);
     }
 
     /**
      * Create a PDO binding key which can be used for escaping variables safely
-     * when executing a query with sql_exec()
+     * when executing a query with sql_exec().
      *
-     * @param  array &$a Array of bindings
-     * @param  *      $val  Value to bind
-     * @param  int $type PDO field type
-     * @return string       Bound key to be used in the SQL where this parameter
-     *   would be used.
+     * @param array &$a   Array of bindings
+     * @param *     $val  Value to bind
+     * @param int   $type PDO field type
+     *
+     * @return string Bound key to be used in the SQL where this parameter
+     *                would be used.
      */
-    static function bind(&$a, $val, $type)
+    public static function bind(&$a, $val, $type)
     {
-        $key = ':binding_' . count($a);
+        $key = ':binding_'.count($a);
 
-        $a[] = array(
-            'key' => $key,
-            'val' => $val,
-            'type' => $type
-        );
+        $a[] = [
+            'key'  => $key,
+            'val'  => $val,
+            'type' => $type,
+        ];
 
         return $key;
     }
-
 
     /**
      * Pull a particular property from each assoc. array in a numeric array,
      * returning and array of the property values from each item.
      *
-     * @param  array $a Array to get data from
-     * @param  string $prop Property to read
-     * @return array        Array of property values
+     * @param array  $a    Array to get data from
+     * @param string $prop Property to read
+     *
+     * @return array Array of property values
      */
-    static function pluck($a, $prop)
+    public static function pluck($a, $prop)
     {
-        $out = array();
+        $out = [];
 
         for ($i = 0, $len = count($a); $i < $len; $i++) {
             $out[] = $a[$i][$prop];
@@ -510,21 +522,22 @@ class Datatables
         return $out;
     }
 
-
     /**
-     * Return a string from an array or a string
+     * Return a string from an array or a string.
      *
-     * @param  array|string $a Array to join
-     * @param  string $join Glue for the concatenation
+     * @param array|string $a    Array to join
+     * @param string       $join Glue for the concatenation
+     *
      * @return string Joined string
      */
-    static function _flatten($a, $join = ' AND ')
+    public static function _flatten($a, $join = ' AND ')
     {
         if (!$a) {
             return '';
-        } else if ($a && is_array($a)) {
+        } elseif ($a && is_array($a)) {
             return implode($join, $a);
         }
+
         return $a;
     }
 }

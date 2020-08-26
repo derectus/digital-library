@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     /**
-     * PayTR Callback URL
+     * PayTR Callback URL.
      *
      * @param Request $request
      *
@@ -25,5 +25,4 @@ class OrderController extends Controller
 
         return 'OK';
     }
-
 }

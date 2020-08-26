@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helper\Datatables;
-use App\Issue;
-use App\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\AdminController;
+use App\Issue;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use League\Flysystem\FileExistsException;
 
@@ -21,10 +20,11 @@ class IssueController extends AdminController
      */
     public function index(Request $request)
     {
-        if ($request->get('json'))
+        if ($request->get('json')) {
             return response()->json(
                 Datatables::simple($request->all(), 'issues', 'id', $this->issueService->getDatatableColumns())
             );
+        }
 
         return view('admin.datatables', [
             'title' => 'Sayılar',
@@ -40,27 +40,28 @@ class IssueController extends AdminController
     public function create()
     {
         return view('admin.issues.create', [
-            'issues_all_count' => Issue::all('id')->count()
+            'issues_all_count' => Issue::all('id')->count(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         // Validation
         $request->validate([
-            'price' => ['required', 'between:0,99.99'],
-            'issue' => ['required', 'integer'],
-            'month' => ['required', 'string'],
+            'price'    => ['required', 'between:0,99.99'],
+            'issue'    => ['required', 'integer'],
+            'month'    => ['required', 'string'],
             'language' => ['required', 'string', 'regex:(tr|en)'],
-            'cover' => ['required', 'image', 'mimes:jpeg'],
-            'pdf' => ['required', 'mimes:pdf'],
-            'content' => ['required', 'string'],
+            'cover'    => ['required', 'image', 'mimes:jpeg'],
+            'pdf'      => ['required', 'mimes:pdf'],
+            'content'  => ['required', 'string'],
             'preamble' => ['required', 'string'],
         ]);
 
@@ -70,13 +71,15 @@ class IssueController extends AdminController
         // Redirect Issues page
         Session::flash('class', 'success');
         Session::flash('message', 'Yeni sayi başarıyla yüklendi! Üyelere hatırlatma epostası göndermeyi unutmayın!');
+
         return redirect()->route('admin.issues.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -85,38 +88,40 @@ class IssueController extends AdminController
         $issue = $issues->find($id);
 
         return view('admin.issues.edit', [
-            'issue' => $issue,
-            'issues_all_count' => $issues->count()
+            'issue'            => $issue,
+            'issues_all_count' => $issues->count(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         // Validation
         $request->validate([
-            'price' => ['required', 'between:0,99.99'],
-            'issue' => ['required', 'integer'],
-            'month' => ['required', 'string'],
+            'price'    => ['required', 'between:0,99.99'],
+            'issue'    => ['required', 'integer'],
+            'month'    => ['required', 'string'],
             'language' => ['required', 'string', 'regex:(tr|en)'],
-            'cover' => ['image', 'mimes:jpeg'],
-            'pdf' => ['mimes:pdf'],
-            'content' => ['required', 'string'],
+            'cover'    => ['image', 'mimes:jpeg'],
+            'pdf'      => ['mimes:pdf'],
+            'content'  => ['required', 'string'],
             'preamble' => ['required', 'string'],
         ]);
 
         $issue = Issue::findOrFail($id);
 
         // Create title
-        $title = 'Arka Kapı Dergi Sayı ' . $request->input('issue');
-        if ($request->input('language') == 'en')
-            $title = 'Arka Kapı Magazine Issue ' . $request->input('issue');
+        $title = 'Arka Kapı Dergi Sayı '.$request->input('issue');
+        if ($request->input('language') == 'en') {
+            $title = 'Arka Kapı Magazine Issue '.$request->input('issue');
+        }
 
         // Create slug
         $slug = str_slug($title, '-', 'tr');
@@ -127,6 +132,7 @@ class IssueController extends AdminController
         } catch (FileExistsException $e) {
             Session::flash('class', 'danger');
             Session::flash('message', 'Seçtiğiniz Sayı ve Dile ait bir sayı zaten var! Üzerine yazamazsınız!');
+
             return $this->edit($id);
         }
 
@@ -142,5 +148,4 @@ class IssueController extends AdminController
 
         return redirect()->route('admin.issues.edit', $id);
     }
-
 }
