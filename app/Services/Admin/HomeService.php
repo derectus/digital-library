@@ -44,11 +44,11 @@ class HomeService
             $date = date('m/Y', strtotime($order->created_at));
             $purchases_register_months[] = $date;
 
-            if (!isset($purchases_tr[$date])) {
+            if (! isset($purchases_tr[$date])) {
                 $purchases_tr[$date] = 0;
             }
 
-            if (!isset($purchases_en[$date])) {
+            if (! isset($purchases_en[$date])) {
                 $purchases_en[$date] = 0;
             }
 

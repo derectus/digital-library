@@ -532,7 +532,7 @@ class Datatables
      */
     public static function _flatten($a, $join = ' AND ')
     {
-        if (!$a) {
+        if (! $a) {
             return '';
         } elseif ($a && is_array($a)) {
             return implode($join, $a);
