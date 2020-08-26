@@ -38,7 +38,7 @@ class IssueController extends Controller
     {
         $issue = Issue::where('slug', $slug)->firstOrFail();
 
-        if (!$issue->is_purchased) {
+        if (! $issue->is_purchased) {
             $order = $this->issueService->createOrder(Auth::user(), $issue);
         }
 
@@ -85,7 +85,7 @@ class IssueController extends Controller
         $issue = Issue::where('slug', $slug)->firstOrFail();
 
         // If user not have access this to issue
-        if (!Auth::user()->is_admin && !$issue->is_purchased) {
+        if (! Auth::user()->is_admin && ! $issue->is_purchased) {
             abort(403);
         }
 

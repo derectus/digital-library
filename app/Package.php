@@ -27,7 +27,7 @@ class Package extends Model
 
     public function getIsPurchasedAttribute()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return false;
         }
 
@@ -38,7 +38,7 @@ class Package extends Model
 
     public function getPurchasedIssuesAttribute()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return null;
         }
 
