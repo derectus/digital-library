@@ -27,7 +27,7 @@ class Issue extends Model
 
     public function getIsPurchasedAttribute()
     {
-        if (! Auth::check()) {
+        if (!Auth::check()) {
             return false;
         }
 

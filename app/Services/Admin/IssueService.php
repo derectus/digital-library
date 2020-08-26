@@ -99,7 +99,7 @@ class IssueService
     public function updatePdf(Request $request, Issue $issue, $slug)
     {
         // Upload new PDF
-        if (! is_null($request->file('pdf'))) {
+        if (!is_null($request->file('pdf'))) {
             $pdf = $request->file('pdf');
             Storage::disk('local')->delete($issue->slug.'.pdf');
             Storage::disk('local')->put($slug.'.pdf', file_get_contents($pdf));
@@ -119,7 +119,7 @@ class IssueService
     public function updateCover(Request $request, Issue $issue, $slug)
     {
         // Upload new Cover
-        if (! is_null($request->file('cover'))) {
+        if (!is_null($request->file('cover'))) {
             $cover = $request->file('cover');
             Storage::disk('public')->delete($issue->slug.'.jpg');
             Storage::disk('public')->put($slug.'.jpg', file_get_contents($cover));

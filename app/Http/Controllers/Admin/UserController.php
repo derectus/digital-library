@@ -67,11 +67,11 @@ class UserController extends AdminController
 
         $data = $request->all();
 
-        if (! $request->input('purchases_tr')) {
+        if (!$request->input('purchases_tr')) {
             $data['purchases_tr'] = [];
         }
 
-        if (! $request->input('purchases_en')) {
+        if (!$request->input('purchases_en')) {
             $data['purchases_en'] = [];
         }
 
@@ -130,15 +130,15 @@ class UserController extends AdminController
         // Set password (if sent)
         $data['password'] = Hash::make($request->input('password'));
 
-        if (! $request->input('purchases_tr')) {
+        if (!$request->input('purchases_tr')) {
             $data['purchases_tr'] = [];
         }
 
-        if (! $request->input('purchases_en')) {
+        if (!$request->input('purchases_en')) {
             $data['purchases_en'] = [];
         }
 
-        if (! $request->input('password')) {
+        if (!$request->input('password')) {
             unset($data['password']);
         }
 
